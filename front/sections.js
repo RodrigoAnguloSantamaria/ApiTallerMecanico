@@ -157,9 +157,10 @@ const addcoche = ()=>{
     form$$.innerHTML=`Matricula: <input type="text" class="matricula" placeholder="Inserta matricula"><br>
     Marca:  <input type="text" class="marca" placeholder="Inserta marca"><br>
     Modelo: <input type="text" class="modelo" placeholder="Inserta modelo"><br>
-    Año: <input type="number" class="year" placeholder="Inserta año"><br>
-    Foto:<input type="file" class="imagen" placeholder="Seleciona imagen"><br>
+    Año: <input type="number" class="year" placeholder="Inserta año"><br> 
     <input type="submit" class="submitcoche">`
+
+    //Imagen:<input type="file" class="imagen"><br></br>
     container$$.appendChild(form$$);
     const sendcocheButton$$=document.querySelector(".submitcoche");
     sendcocheButton$$.addEventListener("click",sendNewcoche)
@@ -169,44 +170,46 @@ const sendNewcoche = async ()=>{
     const marca$$=document.querySelector(".marca")
     const modelo$$=document.querySelector(".modelo")
     const year$$=document.querySelector(".year")
-    const foto$$=document.querySelector(".imagen")
+    //const foto$$=document.querySelector(".imagen")
     
-    //let newcoche = new FormData(document.getElementById('addform'));
-    let newcoche = new FormData();
-    newcoche.append("matricula",matricula$$.value)
-    newcoche.append("marca",marca$$.value)
-    newcoche.append("modelo",modelo$$.value)
-    newcoche.append("year",year$$.value)
-    newcoche.append("imagen",foto$$.files[0])
+    
+    
+    //let newcoche = new FormData();
+    //let newcoche = new FormData(document.querySelector("#addform"));
+    // newcoche.append("matricula",matricula$$.value)
+    // newcoche.append("marca",marca$$.value)
+    // newcoche.append("modelo",modelo$$.value)
+    // newcoche.append("year",year$$.value)
+    //newcoche.append("imagen",foto$$.files[0])
 
 
-    // console.log(newcoche)
-    // let newcoche ={
-    //     matricula: (matricula$$.value),
-    //     marca: (marca$$.value),
-    //     modelo: (modelo$$.value),
-    //     year: (year$$.value),
-    //     imagen: (foto$$.target.file[0])
-    // }
+    let newcoche ={
+        matricula: (matricula$$.value),
+        marca: (marca$$.value),
+        modelo: (modelo$$.value),
+        year: (year$$.value)
+    }
      
     console.log(newcoche)
     
     let token = localStorage.getItem ("token");
     await fetch("http://localhost:5000/coches", {
         method: 'POST',
-        Authorization: 'Bearer '+ token,
-        // headers: { 
-        //     Authorization: 'Bearer '+ token,
-        //     'Content-Type': 'application/json',
-               
-        // },
-        //body: JSON.stringify(newcoche)
-        body: newcoche
+        
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer '+ token,
+            //'Accept': '*/*'
+            //'Content-Type': 'multipart/form-data'
+           // boundary=—-WebKitFormBoundaryfgtsKTYLsT7PNUVD'
+        },
+        body: JSON.stringify(newcoche)
+        //body: newcoche
       })
-      .then(res => console.log(res.json()))
-      .catch(error => alert('Error:'+error))
+      .then(res => res.json())
+      .catch(error => alert('Error:' ,error))
       .then(response => {
-        alert('Success:'+response)
+        console.log('Success:' , response)
         
       });
       container$$.innerHTML=`coche creado: ${newcoche.matricula}`;

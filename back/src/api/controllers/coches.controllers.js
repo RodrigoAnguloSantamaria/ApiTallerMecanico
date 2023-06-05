@@ -49,11 +49,12 @@ const getCochesById = async (req, res)=>{
 
 const postCoche = async (req, res)=>{
     try {
-        console.log(req.body)
+        console.log(req.body )
         const newCoche= new Coche(req.body);
         if(req.file){
             newCoche.imagen = req.file.path;
         }
+
         const createdCoche = await newCoche.save();
         return res.status(201).json(createdCoche);
     } catch (error) {
