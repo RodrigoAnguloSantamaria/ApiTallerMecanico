@@ -58,26 +58,31 @@ const printresults = (allJson,tipo)=>{
             const item$$=document.createElement("section");
             item$$.className="item"
             //console.log(item$$)
-            item$$.innerHTML=`<span style="width:20%;border:1px solid black">Id: ${coche._id}</span>
-            <span style="width:20%;border:1px solid black"> Matricula: ${coche.matricula}</span>
-            <span style="width:20%;border:1px solid black"> Marca: ${coche.marca}</span>
-            <span style="width:20%;border:1px solid black">Modelo: ${coche.modelo} </span>
-            <span style="width:20%;border:1px solid black"> Year: ${coche.year}</span>`
+            item$$.innerHTML=`<span style="width:45%;border:1px solid black">Id: ${coche._id}</span>
+            <span style="width:15%;border:1px solid black"> Matricula: ${coche.matricula}</span>
+            <span style="width:15%;border:1px solid black"> Marca: ${coche.marca}</span>
+            <span style="width:15%;border:1px solid black">Modelo: ${coche.modelo} </span>
+            <span style="width:10%;border:1px solid black"> Year: ${coche.year}</span>`
             //console.log(screen$$)
             container$$.appendChild(item$$)
             
             });
+            const nav$$=document.createElement("nav")
+            nav$$.className="b-nav"
             const previo$$= document.createElement("button")
             const siguiente$$= document.createElement("button")
             const actualpagina$$=document.createElement("p")
+
             previo$$.textContent="PREVIO"
             siguiente$$.textContent="SIGUIENTE"
             actualpagina$$.textContent=`Pagina: ${numpagina}`
-            container$$.appendChild(previo$$)
-            container$$.appendChild(actualpagina$$)
-            container$$.appendChild(siguiente$$)
+            nav$$.appendChild(previo$$)
+            nav$$.appendChild(actualpagina$$)
+            nav$$.appendChild(siguiente$$)
+            container$$.appendChild(nav$$)
             
             const resumendatos$$=document.createElement("p")
+            resumendatos$$.className="b-nav__p"
             let ultimoamostrar=numpagina*allJson.info.limit;
             if (ultimoamostrar > allJson.info.numCoches){
                 ultimoamostrar=allJson.info.numCoches;
@@ -106,25 +111,30 @@ const printresults = (allJson,tipo)=>{
         allJson.results.forEach(servicio => {
             const item$$=document.createElement("section");
             item$$.className="item"
-            item$$.innerHTML=`<span style="width:20%;border:1px solid black">Id: ${servicio._id}</span>
-            <span style="width:40%;border:1px solid black">Tipo: ${servicio.tipo}</span>
+            item$$.innerHTML=`<span style="width:25%;border:1px solid black">Id: ${servicio._id}</span>
+            <span style="width:30%;border:1px solid black">Tipo: ${servicio.tipo}</span>
             <span style="width:10%;border:1px solid black">Kms.: ${servicio.kms}</span>
             <span style="width:10%;border:1px solid black">Fecha.: ${servicio.fecha} </span>
             <span style="width:60%;border:1px solid black">Notas.: ${servicio.notas} </span>`
             container$$.appendChild(item$$)
             
+            
             });
+            const nav$$=document.createElement("nav")
+            nav$$.className="b-nav"
             const previo$$= document.createElement("button")
             const siguiente$$= document.createElement("button")
             const actualpagina$$=document.createElement("p")
             previo$$.textContent="PREVIO"
             siguiente$$.textContent="SIGUIENTE"
             actualpagina$$.textContent=`Pagina: ${numpagina}`
-            container$$.appendChild(previo$$)
-            container$$.appendChild(actualpagina$$)
-            container$$.appendChild(siguiente$$)
+            nav$$.appendChild(previo$$)
+            nav$$.appendChild(actualpagina$$)
+            nav$$.appendChild(siguiente$$)
+            container$$.appendChild(nav$$)
             
             const resumendatos$$=document.createElement("p")
+            resumendatos$$.className="b-nav__p"
             let ultimoamostrar=numpagina*allJson.info.limit;
             if (ultimoamostrar > allJson.info.numServicios){
                 ultimoamostrar=allJson.info.numServicios;
@@ -154,10 +164,10 @@ const addcoche = ()=>{
     const form$$=document.createElement("form");
     form$$.id="addform";
     
-    form$$.innerHTML=`Matricula: <input type="text" class="matricula" placeholder="Inserta matricula"><br>
-    Marca:  <input type="text" class="marca" placeholder="Inserta marca"><br>
-    Modelo: <input type="text" class="modelo" placeholder="Inserta modelo"><br>
-    Año: <input type="number" class="year" placeholder="Inserta año"><br> 
+    form$$.innerHTML=`<span>Matricula: </span><input type="text" class="matricula" placeholder="Inserta matricula"><br>
+    <span>Marca:  </span><input type="text" class="marca" placeholder="Inserta marca"><br>
+    <span>Modelo: </span> <input type="text" class="modelo" placeholder="Inserta modelo"><br>
+    <span>Año: </span><input type="number" class="year" placeholder="Inserta año"><br> 
     <input type="submit" class="submitcoche">`
 
     //Imagen:<input type="file" class="imagen"><br></br>
@@ -165,7 +175,9 @@ const addcoche = ()=>{
     const sendcocheButton$$=document.querySelector(".submitcoche");
     sendcocheButton$$.addEventListener("click",sendNewcoche)
 }
-const sendNewcoche = async ()=>{
+
+const sendNewcoche = async (event)=>{
+    event.preventDefault();
     const matricula$$=document.querySelector(".matricula")
     const marca$$=document.querySelector(".marca")
     const modelo$$=document.querySelector(".modelo")
@@ -193,7 +205,7 @@ const sendNewcoche = async ()=>{
     console.log(newcoche)
     
     let token = localStorage.getItem ("token");
-    await fetch("http://localhost:5000/coches", {
+    const call = await fetch("http://localhost:5000/coches", {
         method: 'POST',
         
         headers: { 
@@ -206,13 +218,15 @@ const sendNewcoche = async ()=>{
         body: JSON.stringify(newcoche)
         //body: newcoche
       })
-      .then(res => res.json())
-      .catch(error => alert('Error:' ,error))
-      .then(response => {
-        console.log('Success:' , response)
+      const resultado = await call.json();
+      console.log(resultado)
+    //   .then(res => res.json())
+    //   .catch(error => console.log('Error:' ,error))
+    //   .then(response => {
+    //     console.log('Success:' , response)
         
-      });
-      container$$.innerHTML=`coche creado: ${newcoche.matricula}`;
+    //   });
+      container$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${newcoche.matricula}</h3>`;
       printresults();
 }
 

@@ -1,3 +1,4 @@
+const form$$=document.querySelector(".b-form")
 const email$$=document.querySelector(".b-form__email")
 const password$$=document.querySelector(".b-form__passwd")
 const submit$$=document.querySelector(".b-form__submit")
@@ -26,13 +27,16 @@ const register= async() => {
      if(resJson._id){
         
         const p$$ = document.createElement("p");
-        p$$.innerHTML=`Haz <a href="./index.html">LOGIN</a> con el usuario registrado<br><a href="./index.html">LOGIN</a>`
-        document.body.appendChild(p$$)
+        p$$.innerHTML=`Haz <a href="./index.html">LOGIN</a> con el usuario registrado<br>`
+        form$$.append(p$$)
+        //document.body.appendChild(p$$)
       }
       else{
-        const p$$ = document.createElement("p");
-        p$$.innerHTML=`Email no pasa validacion</p><p>Password no pasa validacion. Ej.: Abcd123$</p>`
-        document.body.appendChild(p$$)
+        alert("Email o password no pasan validacion\nEj. password: Abcd123$")
+        // const p$$ = document.createElement("p");
+        // p$$.innerHTML=`Email no pasa validacion</p><p>Password no pasa validacion. Ej.: Abcd123$</p>`
+        // form$$.append(p$$)
+        //document.body.appendChild(p$$)
       }
     
 
