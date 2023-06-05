@@ -37,6 +37,15 @@ const getCoches = async (req, res)=>{
         return res.status(500).json(error);
     }
 }
+const getAllCoches = async (req, res)=>{
+    try {
+        
+        const allcoches = await Coche.find();
+        return res.status(200).json(allcoches)
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
 const getCochesById = async (req, res)=>{
     try {
         const {id}=req.params;
@@ -88,6 +97,7 @@ const putCoche = async (req, res) => {
 
 const deleteCoche = async (req, res) => {
     try {
+        console.log(req.params)
         const {id}=req.params;
         const deleteCoche = await Coche.findByIdAndDelete(id);
         if(!deleteCoche){
@@ -99,4 +109,4 @@ const deleteCoche = async (req, res) => {
     }
 }
 
-module.exports={getCoches,getCochesById,postCoche,putCoche,deleteCoche}
+module.exports={getCoches,getAllCoches,getCochesById,postCoche,putCoche,deleteCoche}

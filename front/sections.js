@@ -3,6 +3,7 @@
 const allcoches$$ = document.querySelector(".allcoches");
 const allservicios$$ = document.querySelector(".allservicios");
 const addcoche$$ = document.querySelector(".addcoche");
+const deletecoche$$=document.querySelector(".deletecoche")
 // const moviebytittle$$ = document.querySelector(".moviebytitle");
 const container$$ = document.createElement("div")
 let numpagina=1;
@@ -229,12 +230,55 @@ const sendNewcoche = async (event)=>{
       container$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${newcoche.matricula}</h3>`;
       printresults();
 }
+const deletecoche = async ()=>{
+    const call= await fetch("http://localhost:5000/coches/all")
+    const allcochesJson = await call.json();
+    console.log(allcochesJson)
+    container$$.innerHTML=``;
+    const select$$=document.createElement("select")
+    allcochesJson.forEach(coche => {
+        const option$$=document.createElement("option")
+        option$$.value=coche._id;
+        option$$.textContent=`Marca: ${coche.marca}  Modelo: ${coche.modelo}  Matricula: ${coche.matricula}`
+        select$$.appendChild(option$$)
+        
+    });
+    container$$.appendChild(select$$)
+    select$$.addEventListener("change",function(){cocheaborrar(event)})
+}
+const cocheaborrar = async ()=>{
+    container$$.innerHTML=``;
+    console.log(event.target.value)
+    const call = await fetch(`http://localhost:5000/coches/id/${event.target.value}`)
+    const cocheJson= await call.json();
+    const coche$$=document.createElement("h4");
+    coche$$.innerHTML=`Coche a borrar: ${cocheJson.marca} - ${cocheJson.modelo} - con matricula: ${cocheJson.matricula}<br>
+    <input type="button" class="borrarcoche" value="CONFIRMAR">`;
+    container$$.appendChild(coche$$);
+    const confirmar$$=document.querySelector(".borrarcoche");
+    confirmar$$.addEventListener("click",function(){borrarCoche(cocheJson._id)});
+    
+}
+const borrarCoche = async (id)=>{
+    container$$.innerHTML=``;
+    const call=await fetch(`http://localhost:5000/coches/${id}`,{
+        method: 'DELETE'
+    })
+    const borrarJson= await call.json();
+    if (borrarJson){
+        const coche$$=document.createElement("h3");
+        coche$$.innerHTML=`Coche borrado`;
+        container$$.appendChild(coche$$);
+    }
+    tipo="borrar"
 
+}
 
 
 allcoches$$.addEventListener("click",function(){getallcoches(numpagina)});
 allservicios$$.addEventListener("click",function(){getallservicios(numpagina)});
 addcoche$$.addEventListener("click",addcoche);
+deletecoche$$.addEventListener("click",deletecoche)
 // moviebytittle$$.addEventListener("change",function(){getmoviesbyid(moviebytittle$$.value)});
 
 
