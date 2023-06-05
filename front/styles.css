@@ -1,0 +1,30 @@
+header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    border:2px solid gray
+}
+.addform{
+    width: 90%;
+    
+}
+.b-loginform{
+    display: flex;
+    flex-direction: column;
+    border:1px solid black;
+}
+.b-registerform{
+    display: flex;
+    flex-direction: column;
+    border:1px solid black;
+}
+.b-registerform--hidden{
+    display: none;
+}
