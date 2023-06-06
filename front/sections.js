@@ -18,7 +18,7 @@ const getallcoches = async (page)=>{
     if (tipo != "coches"){numpagina=1}
     
     maincontainer$$.innerHTML=``;
-    container$$.innerHTML=``
+    container$$.innerHTML=``;
     let token = localStorage.getItem ("token");
     const call = await fetch(`http://localhost:5000/coches?page=${page}&limit=5`, {
         method: 'GET', // or 'PUT'
@@ -38,7 +38,7 @@ const getallservicios = async (page)=>{
     if (tipo != "servicios"){numpagina=1}
     
     maincontainer$$.innerHTML=``;
-    container$$.innerHTML=``
+    container$$.innerHTML=``;
     let token = localStorage.getItem ("token");
     const call = await fetch(`http://localhost:5000/servicios?page=${page}&limit=5`, {
         method: 'GET', // or 'PUT'
@@ -196,7 +196,7 @@ const printresults = async (allJson,tipo)=>{
 
 const addcoche = ()=>{
     maincontainer$$.innerHTML=``;
-    container$$.innerHTML=``
+    container$$.innerHTML=``;
     const form$$=document.createElement("form");
     form$$.id="addform";
     
@@ -209,8 +209,9 @@ const addcoche = ()=>{
     <input type="submit" class="submitcoche">`
 
     //Imagen:<input type="file" class="imagen"><br></br>
-    container$$.appendChild(form$$);
+    maincontainer$$.appendChild(form$$);
     const sendcocheButton$$=document.querySelector(".submitcoche");
+    console.log(sendcocheButton$$)
     sendcocheButton$$.addEventListener("click",sendNewcoche)
 }
 
@@ -266,7 +267,7 @@ const sendNewcoche = async (event)=>{
     //     console.log('Success:' , response)
         
     //   });
-      container$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${resultado.matricula}</h3>`;
+      maincontainer$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${resultado.matricula}</h3>`;
       printresults();
 }
 const deletecoche = async ()=>{
@@ -283,7 +284,7 @@ const deletecoche = async ()=>{
         select$$.appendChild(option$$)
         
     });
-    container$$.appendChild(select$$)
+    maincontainer$$.appendChild(select$$)
     select$$.addEventListener("change",function(){cocheaborrar(event)})
 }
 const cocheaborrar = async ()=>{
@@ -294,13 +295,13 @@ const cocheaborrar = async ()=>{
     const coche$$=document.createElement("h4");
     coche$$.innerHTML=`Coche a borrar: ${cocheJson.marca} - ${cocheJson.modelo} - con matricula: ${cocheJson.matricula}<br>
     <input type="button" class="borrarcoche" value="CONFIRMAR">`;
-    container$$.appendChild(coche$$);
+    maincontainer$$.appendChild(coche$$);
     const confirmar$$=document.querySelector(".borrarcoche");
     confirmar$$.addEventListener("click",function(){borrarCoche(cocheJson._id)});
     
 }
 const borrarCoche = async (id)=>{
-    container$$.innerHTML=``;
+    maincontainer$$.innerHTML=``;
     const call=await fetch(`http://localhost:5000/coches/${id}`,{
         method: 'DELETE'
     })
@@ -308,7 +309,7 @@ const borrarCoche = async (id)=>{
     if (borrarJson){
         const coche$$=document.createElement("h3");
         coche$$.innerHTML=`Coche borrado`;
-        container$$.appendChild(coche$$);
+        maincontainer$$.appendChild(coche$$);
     }
     tipo="borrar"
 
