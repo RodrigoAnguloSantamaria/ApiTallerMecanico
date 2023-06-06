@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 
 app.use(cors(
     {
-      origin: ["http://localhost:3000","http://localhost:4200","http://127.0.0.1:5500"],  //si sabemos origenes podemos ponerlos en un array
-      // origin: "*", // permito todas las conexiones
+      //origin: ["http://localhost:3000","http://localhost:4200","http://127.0.0.1:5500"],  //si sabemos origenes podemos ponerlos en un array
+      origin: "*", // permito todas las conexiones
       credentials: true
     }
   ))

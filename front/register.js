@@ -33,10 +33,6 @@ const register= async() => {
       }
       else{
         alert("Email o password no pasan validacion\nEj. password: Abcd123$")
-        // const p$$ = document.createElement("p");
-        // p$$.innerHTML=`Email no pasa validacion</p><p>Password no pasa validacion. Ej.: Abcd123$</p>`
-        // form$$.append(p$$)
-        //document.body.appendChild(p$$)
       }
     
 

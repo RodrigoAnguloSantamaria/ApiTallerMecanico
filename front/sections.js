@@ -1,4 +1,4 @@
-//const { JsonWebTokenError } = require("jsonwebtoken");
+
 
 const allcoches$$ = document.querySelector(".allcoches");
 const allservicios$$ = document.querySelector(".allservicios");
@@ -60,8 +60,7 @@ const printresults = async (allJson,tipo)=>{
         const call = await fetch("http://localhost:5000/clientes/all");
         const clientesJson= await call.json();
 
-        // const maincontainer$$=document.createElement("div")
-        // const container$$=document.createElement("div");
+       
         container$$.className="container"
         allJson.results.forEach(coche => {
             
@@ -118,9 +117,7 @@ const printresults = async (allJson,tipo)=>{
             maincontainer$$.appendChild(container$$)
             maincontainer$$.appendChild(nav$$)
             maincontainer$$.appendChild(resumendatos$$)
-            // document.body.appendChild(container$$);
-            // document.body.appendChild(nav$$)
-            // document.body.appendChild(resumendatos$$)
+           
             
             if (numpagina === 1){
             }
@@ -177,8 +174,7 @@ const printresults = async (allJson,tipo)=>{
             maincontainer$$.appendChild(container$$)
             maincontainer$$.appendChild(nav$$)
             maincontainer$$.appendChild(resumendatos$$)
-            // container$$.appendChild(resumendatos$$)
-            // document.body.appendChild(container$$);
+           
             if (numpagina === 1){
             }
             else{
@@ -208,7 +204,7 @@ const addcoche = ()=>{
     <span>Imagen: </span><input type="file" class="imagen" placeholder="Inserta imagen"><br>
     <input type="submit" class="submitcoche">`
 
-    //Imagen:<input type="file" class="imagen"><br></br>
+    
     maincontainer$$.appendChild(form$$);
     const sendcocheButton$$=document.querySelector(".submitcoche");
     console.log(sendcocheButton$$)
@@ -236,12 +232,7 @@ const sendNewcoche = async (event)=>{
     newcoche.append("imagen",foto$$.files[0])
 
 
-    // let newcoche ={
-    //     matricula: (matricula$$.value),
-    //     marca: (marca$$.value),
-    //     modelo: (modelo$$.value),
-    //     year: (year$$.value)
-    // }
+   
      
     console.log(newcoche)
     
@@ -250,24 +241,17 @@ const sendNewcoche = async (event)=>{
         method: 'POST',
         
         headers: { 
-            //'Content-Type': 'application/json',
+            
             'Authorization': 'Bearer '+ token,
-            //'Accept': '*/*'
-            //'Content-Type': 'multipart/form-data'
-           // boundary=—-WebKitFormBoundaryfgtsKTYLsT7PNUVD'
+       
         },
         body: newcoche
         //body: newcoche
       })
       const resultado = await call.json();
-      console.log(resultado)
-    //   .then(res => res.json())
-    //   .catch(error => console.log('Error:' ,error))
-    //   .then(response => {
-    //     console.log('Success:' , response)
-        
-    //   });
+    
       maincontainer$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${resultado.matricula}</h3>`;
+      numpagina=1;
       printresults();
 }
 const deletecoche = async ()=>{
@@ -286,6 +270,7 @@ const deletecoche = async ()=>{
     });
     maincontainer$$.appendChild(select$$)
     select$$.addEventListener("change",function(){cocheaborrar(event)})
+    numpagina=1;
 }
 const cocheaborrar = async ()=>{
     container$$.innerHTML=``;
@@ -298,6 +283,7 @@ const cocheaborrar = async ()=>{
     maincontainer$$.appendChild(coche$$);
     const confirmar$$=document.querySelector(".borrarcoche");
     confirmar$$.addEventListener("click",function(){borrarCoche(cocheJson._id)});
+    numpagina=1;
     
 }
 const borrarCoche = async (id)=>{
@@ -312,7 +298,7 @@ const borrarCoche = async (id)=>{
         maincontainer$$.appendChild(coche$$);
     }
     tipo="borrar"
-
+    numpagina=1;
 }
 
 
