@@ -7,6 +7,7 @@ const cocheSchema = new Schema(
         marca: {type:String, required:true},
         modelo: {type:String, required:true},
         year: {type:Number,required:true},
+        notas:{type:String,required:false},
         servicios: [{type: Schema.Types.ObjectId, ref:"servicio"}],
         imagen:{type:String}
     },

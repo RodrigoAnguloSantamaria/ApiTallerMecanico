@@ -57,6 +57,15 @@ const getClientes = async (req, res)=>{
         return res.status(500).json(error);
     }
 }
+const getAllClientes = async (req, res)=>{
+    try {
+        
+        const allclientes = await Cliente.find();
+        return res.status(200).json(allclientes)
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+}
 const getClientesById = async (req, res)=>{
     try {
         const {id}=req.params;
@@ -155,4 +164,4 @@ const deleteCliente = async (req, res) => {
     }
 }
 
-module.exports={getClientes,getClientesById,postCliente,putCliente,deleteCliente,loginCliente}
+module.exports={getClientes,getAllClientes,getClientesById,postCliente,putCliente,deleteCliente,loginCliente}

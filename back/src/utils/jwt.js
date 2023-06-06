@@ -10,3 +10,5 @@ const verifySign = (token) => {
 }
 
 module.exports = {generateSign,verifySign}
+
+// utilidad para generar token y verificar la validez

@@ -13,3 +13,5 @@ const connect= async()=>{
 
 }
 module.exports={connect}
+
+// conexion a BBDD . Error de conexion controlado

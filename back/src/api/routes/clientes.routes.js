@@ -1,8 +1,9 @@
 const express = require("express")
-const {getClientes,getClientesById,postCliente,putCliente,deleteCliente,loginCliente} = require("../controllers/clientes.controllers")
+const {getClientes,getAllClientes,getClientesById,postCliente,putCliente,deleteCliente,loginCliente} = require("../controllers/clientes.controllers")
 
 const clientesRoutes = express.Router();
 clientesRoutes.get("/",getClientes);
+clientesRoutes.get("/all",getAllClientes);
 clientesRoutes.get("/id/:id",getClientesById);
 clientesRoutes.post("/login",loginCliente);
 clientesRoutes.post("/register",postCliente);

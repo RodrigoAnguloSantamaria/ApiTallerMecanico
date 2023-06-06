@@ -10,7 +10,7 @@ const serviciosRoutes = require("./src/api/routes/servicios.routes")
 const userRoutes = require("./src/api/routes/user.routes")
 PORT=process.env.PORT;
 
-
+// configuracion cloudinary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_KEY,
@@ -26,8 +26,8 @@ app.use((req, res, next) => {
     next();
   })
 
-  //VAMOS A CONFIGURAR LOS CORS
-//CORS --> CORS ORIGIN RESOURCE SHARING --> Intercambio de recursos cruzados -> manera de permir el compartir recursos enntre distintos origenes
+  // CONFIGURAR LOS CORS
+
 app.use(cors(
     {
       origin: ["http://localhost:3000","http://localhost:4200","http://127.0.0.1:5500"],  //si sabemos origenes podemos ponerlos en un array
@@ -36,13 +36,15 @@ app.use(cors(
     }
   ))
 
-
+// para que lea las url y los json
 app.use(express.json()); 
 app.use(express.urlencoded({extended: false}));
 
+// acceso a rutas de la api
 app.use("/clientes", clientesRoutes);
 app.use("/coches", cochesRoutes);
 app.use("/servicios",isAuth, serviciosRoutes);
 app.use("/",userRoutes)
 
+// escucha
 app.listen(PORT, () => console.log(`escuchando en puerto ${PORT}`));

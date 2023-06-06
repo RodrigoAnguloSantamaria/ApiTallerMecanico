@@ -8,7 +8,9 @@ const arrayCoches=[
         marca: "Audi",
         modelo: "S3",
         año: 2011,
-        servicios: ["6479c1444f4cdf7097930ded","6479c1444f4cdf7097930def"]
+        notas: "nota de ejemplo",
+        servicios: ["6479c1444f4cdf7097930ded","6479c1444f4cdf7097930def"],
+        imagen: ""
     },
     {
         matricula: "5678FFF",

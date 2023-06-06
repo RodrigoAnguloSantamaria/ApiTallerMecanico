@@ -5,17 +5,20 @@ const allservicios$$ = document.querySelector(".allservicios");
 const addcoche$$ = document.querySelector(".addcoche");
 const deletecoche$$=document.querySelector(".deletecoche")
 // const moviebytittle$$ = document.querySelector(".moviebytitle");
-const container$$ = document.createElement("div")
+
 let numpagina=1;
 let tipo="";
-document.body.appendChild(container$$);
+const maincontainer$$=document.createElement("div")
+const container$$ = document.createElement("div")
+document.body.appendChild(maincontainer$$);
 
 
 
 const getallcoches = async (page)=>{
     if (tipo != "coches"){numpagina=1}
     
-    container$$.innerHTML="";
+    maincontainer$$.innerHTML=``;
+    container$$.innerHTML=``
     let token = localStorage.getItem ("token");
     const call = await fetch(`http://localhost:5000/coches?page=${page}&limit=5`, {
         method: 'GET', // or 'PUT'
@@ -34,7 +37,8 @@ const getallcoches = async (page)=>{
 const getallservicios = async (page)=>{
     if (tipo != "servicios"){numpagina=1}
     
-    container$$.innerHTML="";
+    maincontainer$$.innerHTML=``;
+    container$$.innerHTML=``
     let token = localStorage.getItem ("token");
     const call = await fetch(`http://localhost:5000/servicios?page=${page}&limit=5`, {
         method: 'GET', // or 'PUT'
@@ -50,20 +54,40 @@ const getallservicios = async (page)=>{
     printresults(allserviciosJson,tipo);
 
 }
-const printresults = (allJson,tipo)=>{
-    console.log(tipo)
+const printresults = async (allJson,tipo)=>{
+    //console.log(tipo)
     if (tipo === "coches"){
-        console.log(allJson)
+        const call = await fetch("http://localhost:5000/clientes/all");
+        const clientesJson= await call.json();
+
+        // const maincontainer$$=document.createElement("div")
+        // const container$$=document.createElement("div");
+        container$$.className="container"
         allJson.results.forEach(coche => {
             
-            const item$$=document.createElement("section");
+            let nombrecliente="";
+            let telefonocliente="";
+            clientesJson.forEach(cochecliente => {
+                console.log(cochecliente.coches)
+                if (cochecliente.coches.includes(coche._id)){
+                    nombrecliente=cochecliente.nombre_completo;
+                    telefonocliente=cochecliente.telefono;
+                }     
+            });
+           
+
+            const item$$=document.createElement("div");
             item$$.className="item"
             //console.log(item$$)
-            item$$.innerHTML=`<span style="width:45%;border:1px solid black">Id: ${coche._id}</span>
-            <span style="width:15%;border:1px solid black"> Matricula: ${coche.matricula}</span>
-            <span style="width:15%;border:1px solid black"> Marca: ${coche.marca}</span>
-            <span style="width:15%;border:1px solid black">Modelo: ${coche.modelo} </span>
-            <span style="width:10%;border:1px solid black"> Year: ${coche.year}</span>`
+            item$$.innerHTML=`<span> Matricula: ${coche.matricula}</span>
+            <span> Marca: ${coche.marca}</span>
+            <span >Modelo: ${coche.modelo} </span>
+            <span> Year: ${coche.year}</span>
+            <img src="${coche.imagen}">
+            <span> Notas: ${coche.notas}</span>
+            <span >Cliente: ${nombrecliente} </span>
+            <span >Contacto: ${telefonocliente} </span>
+            `
             //console.log(screen$$)
             container$$.appendChild(item$$)
             
@@ -80,7 +104,7 @@ const printresults = (allJson,tipo)=>{
             nav$$.appendChild(previo$$)
             nav$$.appendChild(actualpagina$$)
             nav$$.appendChild(siguiente$$)
-            container$$.appendChild(nav$$)
+            
             
             const resumendatos$$=document.createElement("p")
             resumendatos$$.className="b-nav__p"
@@ -91,8 +115,13 @@ const printresults = (allJson,tipo)=>{
             let primeroamostrar = (numpagina-1)*(allJson.info.limit)+1
             resumendatos$$.innerHTML=`Viendo resultados del ${primeroamostrar} al ${ultimoamostrar}<br>
             Resultados totales: ${allJson.info.numCoches}`
-            container$$.appendChild(resumendatos$$)
-            document.body.appendChild(container$$);
+            maincontainer$$.appendChild(container$$)
+            maincontainer$$.appendChild(nav$$)
+            maincontainer$$.appendChild(resumendatos$$)
+            // document.body.appendChild(container$$);
+            // document.body.appendChild(nav$$)
+            // document.body.appendChild(resumendatos$$)
+            
             if (numpagina === 1){
             }
             else{
@@ -109,18 +138,20 @@ const printresults = (allJson,tipo)=>{
     }
     if (tipo === "servicios"){
         console.log(allJson)
+        container$$.className="container"
         allJson.results.forEach(servicio => {
             const item$$=document.createElement("section");
             item$$.className="item"
-            item$$.innerHTML=`<span style="width:25%;border:1px solid black">Id: ${servicio._id}</span>
-            <span style="width:30%;border:1px solid black">Tipo: ${servicio.tipo}</span>
-            <span style="width:10%;border:1px solid black">Kms.: ${servicio.kms}</span>
-            <span style="width:10%;border:1px solid black">Fecha.: ${servicio.fecha} </span>
-            <span style="width:60%;border:1px solid black">Notas.: ${servicio.notas} </span>`
+            item$$.innerHTML=`<span >Id: ${servicio._id}</span>
+            <span >Tipo: ${servicio.tipo}</span>
+            <span >Kms.: ${servicio.kms}</span>
+            <span >Fecha.: ${servicio.fecha} </span>
+            <span>Notas.: ${servicio.notas} </span>`
             container$$.appendChild(item$$)
             
             
             });
+            
             const nav$$=document.createElement("nav")
             nav$$.className="b-nav"
             const previo$$= document.createElement("button")
@@ -143,8 +174,11 @@ const printresults = (allJson,tipo)=>{
             let primeroamostrar = (numpagina-1)*(allJson.info.limit)+1
             resumendatos$$.innerHTML=`Viendo resultados del ${primeroamostrar} al ${ultimoamostrar}<br>
             Resultados totales: ${allJson.info.numServicios}`
-            container$$.appendChild(resumendatos$$)
-            document.body.appendChild(container$$);
+            maincontainer$$.appendChild(container$$)
+            maincontainer$$.appendChild(nav$$)
+            maincontainer$$.appendChild(resumendatos$$)
+            // container$$.appendChild(resumendatos$$)
+            // document.body.appendChild(container$$);
             if (numpagina === 1){
             }
             else{
@@ -161,7 +195,8 @@ const printresults = (allJson,tipo)=>{
 }
 
 const addcoche = ()=>{
-    container$$.innerHTML="";
+    maincontainer$$.innerHTML=``;
+    container$$.innerHTML=``
     const form$$=document.createElement("form");
     form$$.id="addform";
     
@@ -169,6 +204,8 @@ const addcoche = ()=>{
     <span>Marca:  </span><input type="text" class="marca" placeholder="Inserta marca"><br>
     <span>Modelo: </span> <input type="text" class="modelo" placeholder="Inserta modelo"><br>
     <span>Año: </span><input type="number" class="year" placeholder="Inserta año"><br> 
+    <span>Observaciones:</span><input type="text" class="notas" placeholder="Descripcion del problema"><br>
+    <span>Imagen: </span><input type="file" class="imagen" placeholder="Inserta imagen"><br>
     <input type="submit" class="submitcoche">`
 
     //Imagen:<input type="file" class="imagen"><br></br>
@@ -183,25 +220,27 @@ const sendNewcoche = async (event)=>{
     const marca$$=document.querySelector(".marca")
     const modelo$$=document.querySelector(".modelo")
     const year$$=document.querySelector(".year")
-    //const foto$$=document.querySelector(".imagen")
+    const notas$$=document.querySelector(".notas")
+    const foto$$=document.querySelector(".imagen")
     
     
     
-    //let newcoche = new FormData();
+    let newcoche = new FormData();
     //let newcoche = new FormData(document.querySelector("#addform"));
-    // newcoche.append("matricula",matricula$$.value)
-    // newcoche.append("marca",marca$$.value)
-    // newcoche.append("modelo",modelo$$.value)
-    // newcoche.append("year",year$$.value)
-    //newcoche.append("imagen",foto$$.files[0])
+    newcoche.append("matricula",matricula$$.value)
+    newcoche.append("marca",marca$$.value)
+    newcoche.append("modelo",modelo$$.value)
+    newcoche.append("year",year$$.value)
+    newcoche.append("notas",notas$$.value)
+    newcoche.append("imagen",foto$$.files[0])
 
 
-    let newcoche ={
-        matricula: (matricula$$.value),
-        marca: (marca$$.value),
-        modelo: (modelo$$.value),
-        year: (year$$.value)
-    }
+    // let newcoche ={
+    //     matricula: (matricula$$.value),
+    //     marca: (marca$$.value),
+    //     modelo: (modelo$$.value),
+    //     year: (year$$.value)
+    // }
      
     console.log(newcoche)
     
@@ -210,13 +249,13 @@ const sendNewcoche = async (event)=>{
         method: 'POST',
         
         headers: { 
-            'Content-Type': 'application/json',
+            //'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ token,
             //'Accept': '*/*'
             //'Content-Type': 'multipart/form-data'
            // boundary=—-WebKitFormBoundaryfgtsKTYLsT7PNUVD'
         },
-        body: JSON.stringify(newcoche)
+        body: newcoche
         //body: newcoche
       })
       const resultado = await call.json();
@@ -227,14 +266,15 @@ const sendNewcoche = async (event)=>{
     //     console.log('Success:' , response)
         
     //   });
-      container$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${newcoche.matricula}</h3>`;
+      container$$.innerHTML=`<h3 class="cochecreado">Coche creado: ${resultado.matricula}</h3>`;
       printresults();
 }
 const deletecoche = async ()=>{
     const call= await fetch("http://localhost:5000/coches/all")
     const allcochesJson = await call.json();
     console.log(allcochesJson)
-    container$$.innerHTML=``;
+    maincontainer$$.innerHTML=``;
+    container$$.innerHTML=``
     const select$$=document.createElement("select")
     allcochesJson.forEach(coche => {
         const option$$=document.createElement("option")

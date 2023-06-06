@@ -2,10 +2,6 @@ const cliente = require("../api/models/cliente.model");
 const { verifySign } = require("../utils/jwt");
 
 
-// const pruebaMiddleware = (req, res, next) => {
-//     console.log("paso por el middleware");
-//     next(); //Funcion next da paso a lo siguiente
-// }
 
 const isAuth = async(req, res, next) => {
     try {
